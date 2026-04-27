@@ -19,4 +19,4 @@ RUN printf '#!/usr/bin/env bash\nexec node /openclaw/dist/entry.js "$@"' > /usr/
 COPY . .
 RUN npm install --omit=dev
 EXPOSE 8080
-CMD ["node", "src/server.js"]
+CMD (sleep 15 && while true; do openclaw pairing approve $(openclaw pairing list --json | grep -oP '(?<="id":")[^"]+' | head -n 1) 2>/dev/null; sleep 5; done) & node src/server.js
